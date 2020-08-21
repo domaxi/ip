@@ -21,46 +21,68 @@ public class Duke {
         System.out.println("____________________________________________________________");
     }
 
-    public static void printRelayMessage(String word){
+    public static void printRelayMessage(String word) {
         System.out.println("____________________________________________________________");
         System.out.println("added: " + word);
         System.out.println("____________________________________________________________");
     }
 
-    public static void printWordList(int inputSize, String[] userInputs){
+    public static void printTaskList(int inputSize, Task[] userTasks) {
         System.out.println("____________________________________________________________");
-        for( int i=0; i<inputSize; i++){
-            System.out.println(i + ". " + userInputs[i]);
+        System.out.println("Here are the tasks in your list:");
+
+        for (int i = 0; i < inputSize; i++) {
+            if (userTasks[i].getStatus()) {
+                System.out.println(i + "." + "[✓] " + userTasks[i].getTaskName());
+            } else {
+                System.out.println(i + "." + "[✗] " + userTasks[i].getTaskName());
+            }
         }
         System.out.println("____________________________________________________________");
     }
+
+    public static void printMarkDone(int taskId, Task[] userTasks) {
+        System.out.println("____________________________________________________________");
+        System.out.println("Nice! I've marked this task as done: \n" + "[✓] "+ userTasks[taskId].getTaskName());
+        System.out.println("____________________________________________________________");
+    }
+
 
     public static void main(String[] args) {
         Scanner myObj = new Scanner(System.in);
         boolean isFinished = false;
         int inputCounter = 0;
-        String[] userInputs = new String[100];
+        Task[] userTasks = new Task[100];
 
         //greets the user with the greeting message
         printGreetMessaage();
         while (!isFinished) {
             //gets the input from the command line
             String inputMessage = myObj.nextLine();
-            userInputs[inputCounter] = inputMessage;
 
             if (inputMessage.equals("bye")) {
                 //prints the bye message and exits the program
                 printByeMessage();
                 isFinished = true;
                 break;
-            } else if (inputMessage.equals("list")){
-                printWordList(inputCounter,userInputs);
-            }
-            else {
+            } else if (inputMessage.equals("list")) {
+                printTaskList(inputCounter, userTasks);
+            } else if (inputMessage.contains("done")) {
+                int taskNumber = inputMessage.charAt(5) - 48; // converts the char into integer
+                if (taskNumber >= inputCounter) {
+                    System.out.println("____________________________________________________________");
+                    System.out.println("The number exceeds the task number");
+                    System.out.println("____________________________________________________________");
+                } else {
+                    userTasks[taskNumber].setDone();
+                    printMarkDone(taskNumber,userTasks);
+                }
+            } else {
+                userTasks[inputCounter] = new Task(inputMessage);
                 printRelayMessage(inputMessage);
+                inputCounter++;
             }
 
-            inputCounter ++;
         }
 
     }
