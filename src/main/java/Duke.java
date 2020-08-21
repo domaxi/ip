@@ -23,27 +23,44 @@ public class Duke {
 
     public static void printRelayMessage(String word){
         System.out.println("____________________________________________________________");
-        System.out.println(word);
+        System.out.println("added: " + word);
+        System.out.println("____________________________________________________________");
+    }
+
+    public static void printWordList(int inputSize, String[] userInputs){
+        System.out.println("____________________________________________________________");
+        for( int i=0; i<inputSize; i++){
+            System.out.println(i + ". " + userInputs[i]);
+        }
         System.out.println("____________________________________________________________");
     }
 
     public static void main(String[] args) {
         Scanner myObj = new Scanner(System.in);
         boolean isFinished = false;
+        int inputCounter = 0;
+        String[] userInputs = new String[100];
 
         //greets the user with the greeting message
         printGreetMessaage();
         while (!isFinished) {
             //gets the input from the command line
-            String userInput = myObj.nextLine();
-            if (userInput.equals("bye")) {
+            String inputMessage = myObj.nextLine();
+            userInputs[inputCounter] = inputMessage;
+
+            if (inputMessage.equals("bye")) {
                 //prints the bye message and exits the program
                 printByeMessage();
                 isFinished = true;
                 break;
-            } else {
-                printRelayMessage(userInput);
+            } else if (inputMessage.equals("list")){
+                printWordList(inputCounter,userInputs);
             }
+            else {
+                printRelayMessage(inputMessage);
+            }
+
+            inputCounter ++;
         }
 
     }
