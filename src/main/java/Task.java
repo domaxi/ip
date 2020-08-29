@@ -9,9 +9,9 @@ public class Task {
         this.isDone = false;
     }
 
-    public Task(){
+    public Task() {
         this.taskName = "";
-        this.isDone= false;
+        this.isDone = false;
     }
 
     public String getTaskName() {
