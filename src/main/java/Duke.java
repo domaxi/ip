@@ -43,7 +43,7 @@ public class Duke {
 
     public static void printMarkDone(int taskId, Task[] userTasks) {
         System.out.println("____________________________________________________________");
-        System.out.println("Nice! I've marked this task as done: \n" + "[✓] "+ userTasks[taskId].getTaskName());
+        System.out.println("Nice! I've marked this task as done: \n" + "[✓] " + userTasks[taskId].getTaskName());
         System.out.println("____________________________________________________________");
     }
 
@@ -75,7 +75,7 @@ public class Duke {
                     System.out.println("____________________________________________________________");
                 } else {
                     userTasks[taskNumber].setDone();
-                    printMarkDone(taskNumber,userTasks);
+                    printMarkDone(taskNumber, userTasks);
                 }
             } else {
                 userTasks[inputCounter] = new Task(inputMessage);
