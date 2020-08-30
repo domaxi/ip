@@ -1,6 +1,6 @@
-public class Todo extends Task{
+public class Todo extends Task {
 
-    private char type;
+    private final char type;
 
     public Todo(String taskName) {
         super(taskName);
@@ -14,6 +14,6 @@ public class Todo extends Task{
 
     @Override
     public String toString() {
-        return "["+this.getType()+"]" + "[" + (this.getStatus()?"✓":"✗") + "] " + this.getTaskName();
+        return "[" + this.getType() + "]" + "[" + (this.getStatus() ? "✓" : "✗") + "] " + this.getTaskName();
     }
 }
