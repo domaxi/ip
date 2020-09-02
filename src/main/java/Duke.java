@@ -94,13 +94,13 @@ public class Duke {
 
             } else if (inputMessage.contains("deadline")) {
                 String deadlineName = parsedMessages[1].substring(0, parsedMessages[1].indexOf("/") - 1);
-                String deadlineBy = parsedMessages[1].substring(parsedMessages[1].lastIndexOf(" ") + 1);
+                String deadlineBy = parsedMessages[1].substring(parsedMessages[1].indexOf("/") + 4);
                 addTask(new Deadline(deadlineName, deadlineBy));
                 userTasks[taskCount - 1].printAcknowledgeMessage();
 
             } else if (inputMessage.contains("event")) {
                 String eventName = parsedMessages[1].substring(0, parsedMessages[1].indexOf("/") - 1);
-                String eventTime = parsedMessages[1].substring(parsedMessages[1].lastIndexOf(" ") + 1);
+                String eventTime = parsedMessages[1].substring(parsedMessages[1].indexOf("/") + 4);
                 addTask(new Event(eventName, eventTime));
                 userTasks[taskCount - 1].printAcknowledgeMessage();
 
