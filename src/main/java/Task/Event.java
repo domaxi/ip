@@ -1,12 +1,13 @@
-public class Deadline extends Task {
+package Task;
 
-    private final String by;
+public class Event extends Task {
+    private final String time;
     private final char type;
 
-    public Deadline(String taskName, String by) {
+    public Event(String taskName, String time) {
         super(taskName);
-        this.by = by;
-        this.type = 'D';
+        this.time = time;
+        this.type = 'E';
     }
 
     @Override
@@ -18,14 +19,14 @@ public class Deadline extends Task {
     public void printAcknowledgeMessage() {
         System.out.println("____________________________________________________________");
         System.out.println("Got it. I've added this task: ");
-        System.out.println("\t[" + this.getType() + "]" + "[✗]" + this.getTaskName() + " (by: " + this.by + ")");
+        System.out.println("\t[" + this.getType() + "]" + "[✗]" + this.getTaskName() + " (at: " + this.time + ")");
         System.out.println("Now you have " + Task.getNumTask() + " tasks in the list.");
         System.out.println("____________________________________________________________");
     }
 
     @Override
     public String toString() {
-        return "[" + this.getType() + "]" + "[" + (this.getStatus() ? "✓" : "✗") + "] " + this.getTaskName() + " (by: " + this.by + ")";
+        return "[" + this.getType() + "]" + "[" + (this.getStatus() ? "✓" : "✗") + "] " + this.getTaskName() + " (at: " + this.time + ")";
     }
 
 }
