@@ -1,5 +1,5 @@
 import java.util.Scanner;
-import Task.*;
+import task.*;
 
 public class Duke {
     private static final Task[] userTasks = new Task[100];
