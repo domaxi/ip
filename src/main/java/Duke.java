@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import task.*;
 
 public class Duke {
     private static final ArrayList<Task> userTasks = new ArrayList<>();
