@@ -76,7 +76,6 @@ public class Duke {
         System.out.println(line);
     }
 
-
     private static void printSuccessfulSave(boolean isFileExist, boolean isDirectoryCreated, boolean isFileCreated) {
         System.out.println(line);
         if (isFileExist) {
@@ -127,9 +126,10 @@ public class Duke {
         userTasks.get(taskCount - 1).printAcknowledgeMessage();
     }
 
-    private static void executeDeleteCommand(String parsedMessage) {
+
+    private static void executeDeleteCommand (String parsedMessage){
         int taskNumber = Integer.parseInt(parsedMessage);
-        userTasks.remove(taskNumber - 1);
+        userTasks.remove(taskNumber -1);
     }
 
     private static void executeDoneCommand(String parsedMessage) {
@@ -193,6 +193,7 @@ public class Duke {
                 try {
                     executeListCommand();
                 } catch (IndexOutOfBoundsException e) {
+
                     printEmptyListNumber();
                 }
             } else if (inputMessage.contains("deadline")) {
