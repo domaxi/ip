@@ -1,3 +1,3 @@
+[E][✗] that (at: 6 am)
+[D][✓] this (by: 7am)
 [T][✗] this
-[T][✗] that
-[E][✗] hello (at: goodbye)
