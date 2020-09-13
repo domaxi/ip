@@ -1,4 +1,8 @@
+import java.io.FilterWriter;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Duke {
@@ -79,6 +83,17 @@ public class Duke {
         System.out.println(line);
     }
 
+    private static void printSuccessfulSave(boolean isFileExist){
+        System.out.println(line);
+        if(isFileExist){
+            System.out.println("\tThe file already exist. Overwriting the file");
+        }else{
+            System.out.println("\tThe file doesnt exist. Creating a new file");
+        }
+        System.out.println("\tThe file has been saved successfully");
+        System.out.println(line);
+    }
+
     public static void executeListCommand(int taskCount, Task[] userTasks) {
         System.out.println(line);
         System.out.println("Here are the tasks in your list:");
@@ -137,10 +152,41 @@ public class Duke {
             printHelpMessage();
         }
     }
+    public static void writeFile(String fileDirectory) throws IOException{
+        FileWriter fileWriter = new FileWriter(fileDirectory);
+        for(int i=0; i<taskCount; i++){
+            fileWriter.write(userTasks[i].toString() + "\n");
+        }
+        fileWriter.close();
+    }
+
+    private static void writeDukeText() {
+        String outputDirectoryName = "data";
+        String outputFileName = "data/duke.txt";
+        File outputDirectory = new File(outputDirectoryName);
+        File outputFile = new File(outputFileName);
+        boolean isFileExist;
+        try{
+            if(!outputFile.exists()){
+                isFileExist = false;
+                outputDirectory.mkdir();
+                outputFile.createNewFile();
+            }else{
+                isFileExist = true;
+            }
+            writeFile(outputFileName);
+            printSuccessfulSave(isFileExist);
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
 
     public static void main(String[] args) {
         Scanner myScanner = new Scanner(System.in);
         boolean isFinished = false;
+
+        //writeDukeText();
+
         //greets the user with the greeting message
         printGreetMessaage();
         while (!isFinished) {
@@ -177,9 +223,13 @@ public class Duke {
                 }catch (IndexOutOfBoundsException e){
                     printHelpMessage();
                 }
+            } else if(inputMessage.contains("save")){
+                writeDukeText();
             } else {
                 printHelpMessage();
             }
         }
     }
+
+
 }
