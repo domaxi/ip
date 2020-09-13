@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Duke {
     private static final ArrayList<Task> userTasks = new ArrayList<>();
@@ -74,6 +76,21 @@ public class Duke {
         System.out.println(line);
     }
 
+
+    private static void printSuccessfulSave(boolean isFileExist, boolean isDirectoryCreated, boolean isFileCreated) {
+        System.out.println(line);
+        if (isFileExist) {
+            System.out.println("\tThe file already exist. Overwriting the file");
+        } else {
+            System.out.println("\tThe file doesnt exist. Creating a new file");
+            if (isDirectoryCreated && isFileCreated) {
+                System.out.println("\tThe new directory and file has ben created successfully");
+            }
+        }
+        System.out.println("\tThe file has been saved successfully");
+        System.out.println(line);
+    }
+
     public static void executeListCommand() {
         System.out.println(line);
         System.out.println("Here are the tasks in your list:");
@@ -88,10 +105,7 @@ public class Duke {
     }
 
     private static void executeByeCommand() {
-        boolean isFinished;
-        //prints the bye message and exits the program
         printByeMessage();
-        isFinished = true;
     }
 
     private static void executeDeadlineCommand(String parsedMessage) {
@@ -113,9 +127,9 @@ public class Duke {
         userTasks.get(taskCount - 1).printAcknowledgeMessage();
     }
 
-    private static void executeDeleteCommand (String parsedMessage){
+    private static void executeDeleteCommand(String parsedMessage) {
         int taskNumber = Integer.parseInt(parsedMessage);
-        userTasks.remove(taskNumber -1);
+        userTasks.remove(taskNumber - 1);
     }
 
     private static void executeDoneCommand(String parsedMessage) {
@@ -132,9 +146,39 @@ public class Duke {
         }
     }
 
+    public static void writeFile(String fileDirectory) throws IOException {
+        FileWriter fileWriter = new FileWriter(fileDirectory);
+        for (Task userTask : userTasks) {
+            fileWriter.write(userTask.toString() + "\n");
+        }
+        fileWriter.close();
+    }
+
+    private static void saveTask() {
+        String outputDirectoryName = "data";
+        String outputFileName = "data/duke.txt";
+        File outputDirectory = new File(outputDirectoryName);
+        File outputFile = new File(outputFileName);
+        boolean isFileExist;
+        boolean isCreateDirectorySuccess = false, isCreateFileSuccess = false;
+        try {
+            if (!outputFile.exists()) {
+                isFileExist = false;
+                isCreateDirectorySuccess = outputDirectory.mkdir();
+                isCreateFileSuccess = outputFile.createNewFile();
+            } else {
+                isFileExist = true;
+            }
+            writeFile(outputFileName);
+            printSuccessfulSave(isFileExist, isCreateDirectorySuccess, isCreateFileSuccess);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         Scanner myScanner = new Scanner(System.in);
-        boolean isFinished = false;
+
         //greets the user with the greeting message
         printGreetMessage();
         while (true) {
@@ -146,43 +190,45 @@ public class Duke {
                 executeByeCommand();
                 break;
             } else if (inputMessage.equals("list")) {
-                try{
+                try {
                     executeListCommand();
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     printEmptyListNumber();
                 }
             } else if (inputMessage.contains("deadline")) {
                 try {
                     executeDeadlineCommand(parsedMessages[1]);
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     printHelpMessage();
                 }
             } else if (inputMessage.contains("event")) {
                 try {
                     executeEventCommand(parsedMessages[1]);
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     printHelpMessage();
                 }
             } else if (inputMessage.contains("todo")) {
                 try {
                     executeToDoCommand(parsedMessages[1]);
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     printHelpMessage();
                 }
             } else if (inputMessage.contains("done")) {
                 try {
                     executeDoneCommand(parsedMessages[1]);
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     printHelpMessage();
                 }
-            } else if (inputMessage.contains("delete")){
+            } else if (inputMessage.contains("delete")) {
                 try {
                     executeDeleteCommand(parsedMessages[1]);
                     executeListCommand();
-                }catch (IndexOutOfBoundsException e){
+                } catch (IndexOutOfBoundsException e) {
                     printHelpMessage();
                 }
-            }else {
+            } else if (inputMessage.contains("save")) {
+                saveTask();
+            } else {
                 printHelpMessage();
             }
         }
