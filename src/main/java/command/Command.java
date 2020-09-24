@@ -1,5 +1,6 @@
 package command;
 
+import exceptions.DukeException;
 import storage.Storage;
 import task.Deadline;
 import task.Event;
@@ -9,6 +10,7 @@ import ui.Ui;
 
 public class Command {
     private boolean isExit;
+    private boolean validDeadlineEventFormat;
     private final String fullCommand;
     private String taskDetail;
     private String taskName;
@@ -22,43 +24,52 @@ public class Command {
         this.isExit = false;
     }
 
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
+    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException{
         parsedCommand = this.fullCommand.split(" ", 2);
-        String commandPhrase = parsedCommand[0];
-        //checks if the command consists of / (to differentiate deadline and tasks)
+        String commandPhrase = parsedCommand[0]; //command phrase is only for one worded commands
         if (parsedCommand.length > 1) {
             commandDetail = parsedCommand[1];
-            if (fullCommand.contains("/")) {
-                taskName = commandDetail.substring(0, commandDetail.indexOf("/") - 1);
-                taskDetail = commandDetail.substring(commandDetail.indexOf("/") + 4);
+            if (fullCommand.contains("deadline")||fullCommand.contains("event")) {
+                try{
+                    taskName = commandDetail.substring(0, commandDetail.indexOf("/") - 1);
+                    taskDetail = commandDetail.substring(commandDetail.indexOf("/") + 4);
+                    validDeadlineEventFormat = true;
+                }catch (IndexOutOfBoundsException e){
+                    ui.printWrongDeadlineEventFormat();
+                }
             }
         }
 
         if (commandPhrase.equals("bye")) {
             ui.printBye();
             this.isExit = true;
+
         } else if (commandPhrase.equals("list")) {
             try {
-                ui.printList(taskList.listTasks());
+                ui.printList(taskList);
             } catch (IndexOutOfBoundsException e) {
                 ui.printEmptyListNumber();
             }
 
         } else if (commandPhrase.contains("deadline")) {
-            try {
-                Deadline deadline = new Deadline (taskName, taskDetail);
-                taskList.addTask(deadline);
-                ui.printAcknowledgeMessage(deadline,taskList.getTaskListSize());
-            } catch (IndexOutOfBoundsException e) {
-                ui.printHelp();
+            if(validDeadlineEventFormat) {
+                try {
+                    Deadline deadline = new Deadline(taskName, taskDetail);
+                    taskList.addTask(deadline);
+                    ui.printAcknowledgeMessage(deadline, taskList.getTaskListSize());
+                } catch (IndexOutOfBoundsException e) {
+                    ui.printHelp();
+                }
             }
         } else if (commandPhrase.contains("event")) {
-            try {
-                Event event = new Event(taskName, taskDetail);
-                taskList.addTask(event);
-                ui.printAcknowledgeMessage(event,taskList.getTaskListSize());
-            } catch (IndexOutOfBoundsException e) {
-                ui.printHelp();
+            if(validDeadlineEventFormat) {
+                try {
+                    Event event = new Event(taskName, taskDetail);
+                    taskList.addTask(event);
+                    ui.printAcknowledgeMessage(event, taskList.getTaskListSize());
+                } catch (IndexOutOfBoundsException e) {
+                    ui.printHelp();
+                }
             }
         } else if (commandPhrase.contains("todo")) {
             try {
@@ -84,15 +95,18 @@ public class Command {
             try {
                 int taskIndex = Integer.parseInt(commandDetail) - 1;
                 taskList.deleteTask(taskIndex);
-                ui.printList(taskList.listTasks());
+                ui.printList(taskList);
             } catch (IndexOutOfBoundsException e) {
                 ui.printHelp();
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 ui.printWrongFormat();
             }
 
-        } else {
+        }else if (commandPhrase.contains("help")){
             ui.printHelp();
+
+        } else {
+            throw new DukeException("Invalid Command. \n\tType help to show the help screen");
         }
     }
 

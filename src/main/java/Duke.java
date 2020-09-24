@@ -29,9 +29,9 @@ public class Duke {
                 c.execute(tasks, ui, storage);
                 isExit = c.isExit();
             }
-            //catch (DukeException e) {
-            //    ui.showError(e.getMessage());
-            //}
+            catch (DukeException e) {
+                ui.showError(e.getMessage());
+            }
             finally {
                 ui.showLine();
             }

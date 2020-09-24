@@ -1,16 +1,17 @@
 package ui;
 
+import exceptions.DukeException;
 import task.Task;
 import task.TaskList;
 
 import java.util.Scanner;
 
 public class Ui {
-    Scanner textScanner;
+    private static final String RED_TEXT = "\u001b[31m";
+    private static final String GREEN_TEXT = "\u001b[32;1m";
+    private static final String RESET_TEXT = "\u001b[0m";
 
-    public Ui(Scanner textScanner) {
-        this.textScanner = textScanner;
-    }
+    Scanner textScanner;
 
     public Ui() {
         textScanner = new Scanner(System.in);
@@ -33,7 +34,7 @@ public class Ui {
         System.out.println("\tBye. Hope to see you again soon!");
     }
 
-    public void printDone(Task task) {
+    public void printDone(Task task){
         System.out.println("\tNice! I've marked this task as done: \n\t" + task.toString());
     }
 
@@ -55,25 +56,34 @@ public class Ui {
     }
 
     public void printNegativeTaskNumber() {
-        System.out.println("\tThe index must be a positive integer");
+        System.out.println(RED_TEXT + "\tThe index must be a positive integer" + RESET_TEXT);
     }
 
     public void printExceedTaskNumber() {
-        System.out.println("\tThe number exceeds the task number");
+        System.out.println(RED_TEXT + "\tThe number exceeds the task number" + RESET_TEXT);
     }
 
     public void printAcknowledgeMessage(Task task, int taskListSize) {
         System.out.println("\tGot it. I've added this task: ");
-        System.out.println("\t\t" + task.toString());
+        System.out.println(GREEN_TEXT + "\t\t" + task.toString() + RESET_TEXT);
         System.out.println("\tNow you have " + taskListSize + " tasks in the list.");
     }
 
     public void printEmptyListNumber() {
-        System.out.println("\tThere is no task in the list");
+        System.out.println(RED_TEXT + "\t\tThere is no task in the list" + RESET_TEXT);
     }
 
-    public void printList(String message){
-        System.out.println(message);
+    public void printList(TaskList taskList){
+        String listedTasks = "";
+        System.out.println("\tHere are the tasks in your list:");
+        if (taskList.getTaskListSize() == 0) {
+            printEmptyListNumber();
+        } else {
+            for (int i = 0; i < taskList.getTaskListSize(); i++) {
+                listedTasks = listedTasks + ("\t\t" + (i + 1) + ". " + taskList.getUserTasks(i).toString() + "\n");
+            }
+        }
+        System.out.println(listedTasks);
     }
 
     public void showLine(){
@@ -89,6 +99,17 @@ public class Ui {
     }
 
     public void printWrongFormat() {
-        System.out.println("\tPlease enter an integer");
+        System.out.println(RED_TEXT + "Please enter an integer" + RESET_TEXT);
+    }
+
+    public void printWrongDeadlineEventFormat() {
+        System.out.println(RED_TEXT + "\tPlease enter a valid task or deadline format" + RESET_TEXT);
+        System.out.println("\tDeadline - Task with a set deadline \n\t\tdeadline <task description> /by <date of completion>");
+        System.out.println("\tEvent - Task with a set date\n\t\tevent <task description> /at <date of event>");
+    }
+
+
+    public void showError(String message) {
+        System.out.println("\t" + message);
     }
 }
