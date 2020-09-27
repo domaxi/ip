@@ -35,7 +35,7 @@ public class Ui {
     }
 
     public void printDone(Task task){
-        System.out.println("\tNice! I've marked this task as done: \n\t" + task.toString());
+        System.out.println("\tNice! I've marked this task as done: \n\t\t" +  GREEN_TEXT+ task.toString() + RESET_TEXT);
     }
 
     public void printHelp() {
@@ -108,8 +108,7 @@ public class Ui {
         System.out.println("\tEvent - Task with a set date\n\t\tevent <task description> /at <date of event>");
     }
 
-
-    public void showError(String message) {
+    public void printError(String message) {
         System.out.println("\t" + message);
     }
 }

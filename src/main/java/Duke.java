@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 import command.Command;
 import exceptions.DukeException;
 import storage.*;
@@ -12,7 +10,7 @@ public class Duke {
     private TaskList tasks;
     private final Ui ui;
 
-    public Duke(String filePath) {
+    public Duke(String filePath){
         ui = new Ui();
         storage = new Storage(filePath);
         tasks = new TaskList(storage.load());
@@ -30,7 +28,7 @@ public class Duke {
                 isExit = c.isExit();
             }
             catch (DukeException e) {
-                ui.showError(e.getMessage());
+                ui.printError(e.getMessage());
             }
             finally {
                 ui.showLine();

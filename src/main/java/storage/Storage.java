@@ -9,18 +9,15 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Storage {
-    public static final String dataPath = "/data/";
-    public String filePath;
+    String dataPath = "/data/";
+    private static String filePath = "data/tasks.txt";
+    File taskDirectory;
+    File taskFile;
 
-    public Storage(){
-
-    }
+    FileWriter fileWriter;
 
     public TaskList load(){
-        /**
-         * reads from a @storage item.
-         */
-        File readFile = new File(this.filePath);
+        File readFile = new File(filePath);
         TaskList loadedTask = new TaskList();
         try{
             Scanner fileScanner = new Scanner(readFile);
@@ -34,43 +31,45 @@ public class Storage {
     }
 
     private void loadTask(String task, TaskList loadedTask) {
-        String[] taskParsed = task.split("|");
+        String[] taskParsed = task.split(" ");
         Task newTask = new Task();
-        String taskType = taskParsed[0];
-        String taskDone = taskParsed[1];
-        String taskDescription = taskParsed[2];
-        String taskDetail = taskParsed[3];
 
-        if(taskType.equals("T")){
+        char taskType = task.charAt(1);
+        char taskDone = task.charAt(4);
+        String taskDescription = taskParsed[1];
+        String taskDetail = task.substring(task.indexOf(":"));
+
+        if(taskType == 'T'){
             newTask = new Todo(taskDescription);
-        }else if (taskType.equals("D")){
+        }else if (taskType == 'D'){
             newTask = new Deadline(taskDescription,taskDetail);
-        }else if (taskType.equals("E")){
+        }else if (taskType == 'E'){
             newTask = new Event(taskDescription, taskDetail);
         }
 
-        /**
-         * sets the @task.isDone to true if the data input is Done.
-         */
-        if(taskDone.equals("✓")){
+        if(taskDone == '✓'){
             newTask.setDone();
         }
         //loads the new task into the task.
         loadedTask.addTask(newTask);
     }
 
-    public Storage(String filePath) {
-        this.filePath = filePath;
-        File taskDirectory = new File(dataPath);
-        File taskFile = new File(filePath);
-        /**
-         * Creates a new directory and file if the directory (and) or file doesnt exist.
-         */
+    public Storage(String filePath){
+        this.
+        taskDirectory = new File(dataPath);
+        taskFile = new File(filePath);
+
         if(!taskDirectory.exists()){
             createDirectory(dataPath);
         }
         if(!taskFile.exists()){
             createFile(filePath);
+        }
+
+        try {
+            fileWriter = new FileWriter(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -88,23 +87,11 @@ public class Storage {
         }
     }
 
-    public static void writeFile(String fileDirectory, TaskList task) throws IOException {
-        FileWriter fileWriter = new FileWriter(fileDirectory);
+    public static void saveFile(TaskList task) throws IOException {
+        FileWriter fileWriter = new FileWriter(filePath);
+        for(int i=0; i<task.getTaskListSize(); i++){
+            fileWriter.write(task.getUserTasks(i).toString() + "\n");
+        }
         fileWriter.close();
     }
-
-    private static void printSuccessfulSave(boolean isFileExist, boolean isDirectoryCreated, boolean isFileCreated) {
-        System.lineSeparator();
-        if (isFileExist) {
-            System.out.println("\tThe file already exist. Overwriting the file");
-        } else {
-            System.out.println("\tThe file doesnt exist. Creating a new file");
-            if (isDirectoryCreated && isFileCreated) {
-                System.out.println("\tThe new directory and file has ben created successfully");
-            }
-        }
-        System.out.println("\tThe file has been saved successfully");
-        System.lineSeparator();
-    }
-
 }

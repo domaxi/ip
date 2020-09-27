@@ -1,12 +1,15 @@
 package command;
 
 import exceptions.DukeException;
+import exceptions.InvalidCommandException;
 import storage.Storage;
 import task.Deadline;
 import task.Event;
 import task.TaskList;
 import task.Todo;
 import ui.Ui;
+
+import java.io.IOException;
 
 public class Command {
     private boolean isExit;
@@ -24,7 +27,7 @@ public class Command {
         this.isExit = false;
     }
 
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException{
+    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException, InvalidCommandException {
         parsedCommand = this.fullCommand.split(" ", 2);
         String commandPhrase = parsedCommand[0]; //command phrase is only for one worded commands
         if (parsedCommand.length > 1) {
@@ -43,6 +46,11 @@ public class Command {
         if (commandPhrase.equals("bye")) {
             ui.printBye();
             this.isExit = true;
+            try{
+                storage.saveFile(taskList);
+            }catch (IOException e){
+                ui.printError(e.getMessage());
+            }
 
         } else if (commandPhrase.equals("list")) {
             try {
@@ -106,8 +114,9 @@ public class Command {
             ui.printHelp();
 
         } else {
-            throw new DukeException("Invalid Command. \n\tType help to show the help screen");
+            throw new InvalidCommandException("Invalid Command. \n\tType help to show the help screen");
         }
+
     }
 
     public boolean isExit() {

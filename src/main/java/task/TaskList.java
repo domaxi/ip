@@ -1,18 +1,16 @@
 package task;
 
-import exceptions.DukeException;
-import storage.Storage;
-
 import java.util.ArrayList;
 
 public class TaskList {
 
-    private static final ArrayList<Task> userTasks = new ArrayList<>();
+    private static ArrayList<Task> userTasks = new ArrayList<>();
 
     public TaskList() {
     }
 
     public TaskList(TaskList load) {
+        userTasks = load.getTaskList();
     }
 
     public void addTask(Task task){
@@ -29,5 +27,9 @@ public class TaskList {
 
     public int getTaskListSize(){
         return userTasks.size();
+    }
+
+    public ArrayList<Task> getTaskList(){
+        return userTasks;
     }
 }
