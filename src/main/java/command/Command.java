@@ -46,11 +46,7 @@ public class Command {
         if (commandPhrase.equals("bye")) {
             ui.printBye();
             this.isExit = true;
-            try{
-                storage.saveFile(taskList);
-            }catch (IOException e){
-                ui.printError(e.getMessage());
-            }
+            storage.saveFile(taskList);
 
         } else if (commandPhrase.equals("list")) {
             try {

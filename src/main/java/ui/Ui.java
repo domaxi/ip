@@ -80,7 +80,7 @@ public class Ui {
             printEmptyListNumber();
         } else {
             for (int i = 0; i < taskList.getTaskListSize(); i++) {
-                listedTasks = listedTasks + ("\t\t" + (i + 1) + ". " + taskList.getUserTasks(i).toString() + "\n");
+                listedTasks = listedTasks + (GREEN_TEXT + "\t\t" + (i + 1) + ". " + taskList.getUserTasks(i).toString() + "\n" + RESET_TEXT);
             }
         }
         System.out.println(listedTasks);

@@ -2,49 +2,64 @@ package storage;
 
 import task.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Storage {
-    String dataPath = "/data/";
-    private static String filePath = "data/tasks.txt";
-    File taskDirectory;
-    File taskFile;
+    private static String filePath_;
+    private static String fileDirectory_;
+    private File TaskListFile;
+    private File TaskDirectory;
 
-    FileWriter fileWriter;
+    public Storage(String filePath) {
+        //Creates the file and the directory if it doesnt exist
+        Storage.filePath_ = filePath;
+        Storage.fileDirectory_ = filePath.substring(0,filePath.indexOf("/"));
 
-    public TaskList load(){
-        File readFile = new File(filePath);
-        TaskList loadedTask = new TaskList();
-        try{
-            Scanner fileScanner = new Scanner(readFile);
-            while(fileScanner.hasNext()){
-                loadTask(fileScanner.nextLine(),loadedTask);
+        TaskListFile = new File(filePath_);
+        TaskDirectory = new File(fileDirectory_);
+
+        if(!TaskListFile.exists()){
+            try {
+                TaskDirectory.mkdirs();
+                TaskListFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }catch (FileNotFoundException e){
-            createFile(filePath);
+        }
+    }
+
+    public TaskList load() {
+        TaskList loadedTask = new TaskList();
+        try {
+            Scanner taskScanner = new Scanner(TaskListFile);
+            while(taskScanner.hasNext()){
+                loadTask(taskScanner.nextLine(),loadedTask);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
         return loadedTask;
     }
 
-    private void loadTask(String task, TaskList loadedTask) {
-        String[] taskParsed = task.split(" ");
+    private void loadTask(String taskData, TaskList loadedTask) {
         Task newTask = new Task();
 
-        char taskType = task.charAt(1);
-        char taskDone = task.charAt(4);
-        String taskDescription = taskParsed[1];
-        String taskDetail = task.substring(task.indexOf(":"));
+        String parsedTaskData = taskData.substring(7);
+
+        char taskType = taskData.charAt(1);
+        char taskDone = taskData.charAt(4);
 
         if(taskType == 'T'){
-            newTask = new Todo(taskDescription);
-        }else if (taskType == 'D'){
-            newTask = new Deadline(taskDescription,taskDetail);
-        }else if (taskType == 'E'){
-            newTask = new Event(taskDescription, taskDetail);
+            newTask = new Todo(parsedTaskData);
+        }else {
+            String taskDescription = taskData.substring(7,taskData.indexOf("(")-1);
+            String taskDetail = taskData.substring(taskData.indexOf(":") + 2,taskData.length()-1);
+            if (taskType == 'D'){
+                newTask = new Deadline(taskDescription,taskDetail);
+            }else if (taskType == 'E'){
+                newTask = new Event(taskDescription, taskDetail);
+            }
         }
 
         if(taskDone == '✓'){
@@ -54,44 +69,15 @@ public class Storage {
         loadedTask.addTask(newTask);
     }
 
-    public Storage(String filePath){
-        this.
-        taskDirectory = new File(dataPath);
-        taskFile = new File(filePath);
-
-        if(!taskDirectory.exists()){
-            createDirectory(dataPath);
-        }
-        if(!taskFile.exists()){
-            createFile(filePath);
-        }
-
+    public void saveFile(TaskList taskList) {
         try {
-            fileWriter = new FileWriter(filePath);
-        } catch (IOException e) {
+            FileWriter fileWriter = new FileWriter(TaskListFile);
+            for (int i = 0; i < taskList.getTaskListSize(); i++) {
+                fileWriter.write(taskList.getUserTasks(i).toString() + "\n");
+            }
+            fileWriter.close();
+        }catch (IOException e){
             e.printStackTrace();
         }
-    }
-
-    public static void createDirectory(String directoryPath){
-        File outputDirectory = new File(directoryPath);
-        outputDirectory.mkdirs();
-    }
-
-    public static void createFile(String filePath){
-        File fileDirectory = new File(filePath);
-        try{
-            fileDirectory.createNewFile();
-        }catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public static void saveFile(TaskList task) throws IOException {
-        FileWriter fileWriter = new FileWriter(filePath);
-        for(int i=0; i<task.getTaskListSize(); i++){
-            fileWriter.write(task.getUserTasks(i).toString() + "\n");
-        }
-        fileWriter.close();
     }
 }
