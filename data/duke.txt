@@ -1,3 +1,0 @@
-[T][✗] this
-[E][✗] this (at: 7pm)
-[D][✗] that (by: 8am tomorrow)

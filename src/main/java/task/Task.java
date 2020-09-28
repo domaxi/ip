@@ -1,6 +1,6 @@
 package task;
 
-public class Task {
+public class Task extends TaskList{
     private static int numTask = 0;
     private static final int numDone = 0;
     private String taskName;
@@ -27,10 +27,6 @@ public class Task {
         return taskName;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
     public boolean getStatus() {
         return isDone;
     }
@@ -43,11 +39,5 @@ public class Task {
         return type;
     }
 
-    public void printAcknowledgeMessage() {
-        System.out.println("____________________________________________________________");
-        System.out.println("Got it. I've added this task: ");
-        System.out.println("\t[" + this.getType() + "]" + "[✗]" + this.getTaskName());
-        System.out.println("Now you have " + numTask + " tasks in the list.");
-        System.out.println("____________________________________________________________");
-    }
+
 }
