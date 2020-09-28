@@ -9,8 +9,6 @@ import task.TaskList;
 import task.Todo;
 import ui.Ui;
 
-import java.io.IOException;
-
 public class Command {
     private boolean isExit;
     private boolean validDeadlineEventFormat;
@@ -18,7 +16,6 @@ public class Command {
     private String taskDetail;
     private String taskName;
     private String commandDetail;
-    private String[] parsedCommand;
 
 
     public Command(String fullCommand) {
@@ -27,8 +24,8 @@ public class Command {
         this.isExit = false;
     }
 
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException, InvalidCommandException {
-        parsedCommand = this.fullCommand.split(" ", 2);
+    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {
+        String[] parsedCommand = this.fullCommand.split(" ", 2);
         String commandPhrase = parsedCommand[0]; //command phrase is only for one worded commands
         if (parsedCommand.length > 1) {
             commandDetail = parsedCommand[1];
@@ -101,7 +98,7 @@ public class Command {
                 taskList.deleteTask(taskIndex);
                 ui.printList(taskList);
             } catch (IndexOutOfBoundsException e) {
-                ui.printHelp();
+                ui.printExceedTaskNumber();
             } catch (NumberFormatException e) {
                 ui.printWrongFormat();
             }

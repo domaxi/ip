@@ -1,6 +1,5 @@
 package ui;
 
-import exceptions.DukeException;
 import task.Task;
 import task.TaskList;
 
@@ -34,8 +33,8 @@ public class Ui {
         System.out.println("\tBye. Hope to see you again soon!");
     }
 
-    public void printDone(Task task){
-        System.out.println("\tNice! I've marked this task as done: \n\t\t" +  GREEN_TEXT+ task.toString() + RESET_TEXT);
+    public void printDone(Task task) {
+        System.out.println("\tNice! I've marked this task as done: \n\t\t" + GREEN_TEXT + task.toString() + RESET_TEXT);
     }
 
     public void printHelp() {
@@ -55,10 +54,6 @@ public class Ui {
         System.out.println("\t bye");
     }
 
-    public void printNegativeTaskNumber() {
-        System.out.println(RED_TEXT + "\tThe index must be a positive integer" + RESET_TEXT);
-    }
-
     public void printExceedTaskNumber() {
         System.out.println(RED_TEXT + "\tThe number exceeds the task number" + RESET_TEXT);
     }
@@ -73,7 +68,7 @@ public class Ui {
         System.out.println(RED_TEXT + "\t\tThere is no task in the list" + RESET_TEXT);
     }
 
-    public void printList(TaskList taskList){
+    public void printList(TaskList taskList) {
         String listedTasks = "";
         System.out.println("\tHere are the tasks in your list:");
         if (taskList.getTaskListSize() == 0) {
@@ -86,16 +81,12 @@ public class Ui {
         System.out.println(listedTasks);
     }
 
-    public void showLine(){
+    public void showLine() {
         System.out.println("=================================================");
     }
 
-    public String readCommand(){
+    public String readCommand() {
         return textScanner.nextLine();
-    }
-
-    public void showLoadingError() {
-        System.out.println("\tThe file cannot be loaded into the program, please check your directory");
     }
 
     public void printWrongFormat() {

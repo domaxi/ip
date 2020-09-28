@@ -8,8 +8,7 @@ import java.util.Scanner;
 public class Storage {
     private static String filePath_;
     private static String fileDirectory_;
-    private File TaskListFile;
-    private File TaskDirectory;
+    private final File TaskListFile;
 
     public Storage(String filePath) {
         //Creates the file and the directory if it doesnt exist
@@ -17,11 +16,11 @@ public class Storage {
         Storage.fileDirectory_ = filePath.substring(0,filePath.indexOf("/"));
 
         TaskListFile = new File(filePath_);
-        TaskDirectory = new File(fileDirectory_);
+        File taskDirectory = new File(fileDirectory_);
 
         if(!TaskListFile.exists()){
             try {
-                TaskDirectory.mkdirs();
+                taskDirectory.mkdirs();
                 TaskListFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
