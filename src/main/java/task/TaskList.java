@@ -1,6 +1,10 @@
 package task;
 
+import javax.naming.directory.SearchResult;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class TaskList {
 
@@ -31,5 +35,12 @@ public class TaskList {
 
     public ArrayList<Task> getTaskList(){
         return userTasks;
+    }
+
+    public String getSearchResult(String searchPhrase) {
+        return userTasks.stream()
+                .filter((s) -> s.getTaskName().contains(searchPhrase))
+                .map(Object::toString)
+                .collect(Collectors.joining(" \n\t\t"));
     }
 }

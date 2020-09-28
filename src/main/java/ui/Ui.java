@@ -99,6 +99,15 @@ public class Ui {
         System.out.println("\tEvent - Task with a set date\n\t\tevent <task description> /at <date of event>");
     }
 
+    public void printSearchResult(String searchResult, String searchPhrase){
+        System.out.print("\tHere is what I found for \""+ searchPhrase +"\"\n\t\t");
+        if(searchResult.length() > 1){
+            System.out.println(GREEN_TEXT + searchResult + RESET_TEXT);
+        }else{
+            System.out.println(RED_TEXT + "I'm sorry, I cannot find \"" + searchPhrase +"\" in the list" + RESET_TEXT);
+        }
+    }
+
     public void printError(String message) {
         System.out.println("\t" + message);
     }
