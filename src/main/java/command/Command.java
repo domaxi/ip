@@ -3,11 +3,10 @@ package command;
 import exceptions.DukeException;
 import exceptions.InvalidCommandException;
 import storage.Storage;
-import task.Deadline;
-import task.Event;
-import task.TaskList;
-import task.Todo;
+import task.*;
 import ui.Ui;
+
+import java.util.ArrayList;
 
 public class Command {
     private boolean isExit;
@@ -108,6 +107,14 @@ public class Command {
             } catch (IndexOutOfBoundsException e) {
                 ui.printExceedTaskNumberError();
             } catch (NumberFormatException e){
+                ui.printWrongFormatError();
+            }
+
+        }else if (commandPhrase.contains("find")){
+            try {
+                String searchResult = taskList.getSearchResult(commandDetail);
+                ui.printSearchResult(searchResult,commandDetail);
+            } catch (NumberFormatException e) {
                 ui.printWrongFormatError();
             }
 

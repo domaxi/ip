@@ -120,6 +120,20 @@ public class Ui {
     }
 
     /**
+     * Prints the search result from the searchResult variable
+     * @param searchResult is the String that contains the search result
+     * @param searchPhrase is the search keyword
+     */
+    public void printSearchResult(String searchResult, String searchPhrase){
+        System.out.print("\tHere is what I found for \""+ searchPhrase +"\"\n\t\t");
+        if(searchResult.length() > 1){
+            System.out.println(GREEN_TEXT + searchResult + RESET_TEXT);
+        }else{
+            System.out.println(RED_TEXT + "I'm sorry, I cannot find \"" + searchPhrase +"\" in the list" + RESET_TEXT);
+        }
+    }
+
+    /**
      * Prints the error message to the console.
      * @param message The error message
      */

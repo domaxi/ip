@@ -1,6 +1,10 @@
 package task;
 
+import javax.naming.directory.SearchResult;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class TaskList {
 
@@ -55,6 +59,18 @@ public class TaskList {
      */
     public ArrayList<Task> getTaskList(){
         return userTasks;
+    }
+
+    /**
+     * gets the search result from the taskList class
+     * @param searchPhrase is a String that contains the search keyword
+     * @return returns a String that contains all the task from the search
+     */
+    public String getSearchResult(String searchPhrase) {
+        return userTasks.stream()
+                .filter((s) -> s.getTaskName().contains(searchPhrase))
+                .map(Object::toString)
+                .collect(Collectors.joining(" \n\t\t"));
     }
 
 }
