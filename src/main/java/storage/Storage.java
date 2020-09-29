@@ -10,6 +10,12 @@ public class Storage {
     private static String fileDirectory_;
     private final File TaskListFile;
 
+    /**
+     * Initializes the storage class
+     * The method will create a directory, if it doesnt exist
+     * The method will also create a file, if it doesnt exist
+     * @param filePath is the path in which the file exist
+     */
     public Storage(String filePath) {
         //Creates the file and the directory if it doesnt exist
         Storage.filePath_ = filePath;
@@ -28,7 +34,11 @@ public class Storage {
         }
     }
 
-    public TaskList load() {
+    /**
+     * Loads the task from the file
+     * @return returns a taskList class loaded from the task.txt file.
+     */
+    public TaskList loadTaskList() {
         TaskList loadedTask = new TaskList();
         try {
             Scanner taskScanner = new Scanner(TaskListFile);
@@ -41,6 +51,13 @@ public class Storage {
         return loadedTask;
     }
 
+    /**
+     * Processes the file by separating the tasks line by line.
+     * Categorizes the tasks into Deadline, Event, and Todo
+     * Creates each of the object and adding it into the loadedTask class.
+     * @param taskData is a line of String that contains the data of the tasks.
+     * @param loadedTask is a TaskList object that will load the tasks from the file.
+     */
     private void loadTask(String taskData, TaskList loadedTask) {
         Task newTask = new Task();
 
@@ -68,6 +85,10 @@ public class Storage {
         loadedTask.addTask(newTask);
     }
 
+    /**
+     * Writes the tasks into the file
+     * @param taskList is a TaskList which contains the tasks to be saved to the file.
+     */
     public void saveFile(TaskList taskList) {
         try {
             FileWriter fileWriter = new FileWriter(TaskListFile);
