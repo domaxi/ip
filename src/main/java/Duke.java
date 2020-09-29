@@ -13,11 +13,11 @@ public class Duke {
     public Duke(String filePath){
         ui = new Ui();
         storage = new Storage(filePath);
-        tasks = new TaskList(storage.load());
+        tasks = new TaskList(storage.loadTaskList());
     }
 
     public void run() {
-        ui.showWelcome();
+        ui.printWelcomeMessage();
         boolean isExit = false;
         while (!isExit) {
             try {
