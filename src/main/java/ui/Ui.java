@@ -56,25 +56,33 @@ public class Ui {
 
     // Prints the help message that shows how to properly type commands //
     public void printHelpMessage() {
-        System.out.println("The command you entered is invalid");
-        System.out.println("Enter one of these commands");
+        System.out.println("How to use DUKE");
         System.out.println("A. ADD A TASK");
         System.out.println("\t1. Todo - Task with only the description\n\t\ttodo <task description>");
         System.out.println("\t2. Deadline - Task with a set deadline \n\t\tdeadline <task description> /by <date of completion>");
         System.out.println("\t3. Event - Task with a set date\n\t\tevent <task description> /at <date of event>");
         System.out.println("B. LIST THE TASK");
         System.out.println("\t list");
-        System.out.println("C. MARK THE TASK AS DONE");
+        System.out.println("C. SEARCH THE TASK LIST");
+        System.out.println("\t search <search_keyword>");
+        System.out.println("D. MARK THE TASK AS DONE");
         System.out.println("\t done <task number>");
-        System.out.println("D. DELETE THE TASK");
+        System.out.println("E. DELETE THE TASK");
         System.out.println("\t delete <task number>");
-        System.out.println("E. END THE PROGRAM");
+        System.out.println("F. END THE PROGRAM");
         System.out.println("\t bye");
     }
 
     // Print the acknowledge message after adding a task.
     public void printAcknowledgeMessage(Task task, int taskListSize) {
         System.out.println("\tGot it. I've added this task");
+        System.out.println(GREEN_TEXT + "\t\t" + task.toString() + RESET_TEXT);
+        System.out.println("\tNow you have " + taskListSize + " tasks in the list.");
+    }
+
+    // Print the acknowledge message after adding a task.
+    public void printDeleteAcknowledgeMessage(Task task, int taskListSize) {
+        System.out.println("\tGot it. I've deleted this task");
         System.out.println(GREEN_TEXT + "\t\t" + task.toString() + RESET_TEXT);
         System.out.println("\tNow you have " + taskListSize + " tasks in the list.");
     }

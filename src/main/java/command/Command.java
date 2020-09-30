@@ -110,7 +110,7 @@ public class Command {
                 ui.printWrongFormatError();
             }
 
-        }else if (commandPhrase.contains("find")){
+        }else if (commandPhrase.contains("search")){
             try {
                 String searchResult = taskList.getSearchResult(commandDetail);
                 ui.printSearchResult(searchResult,commandDetail);
@@ -121,8 +121,9 @@ public class Command {
         } else if (commandPhrase.contains("delete")) {
             try {
                 int taskIndex = Integer.parseInt(commandDetail) - 1;
+                Task deletedTask = taskList.getUserTasks(taskIndex);
                 taskList.deleteTask(taskIndex);
-                ui.printTaskList(taskList);
+                ui.printDeleteAcknowledgeMessage(deletedTask,taskList.getTaskListSize());
             } catch (IndexOutOfBoundsException e) {
                 ui.printExceedTaskNumberError();
             } catch (NumberFormatException e) {
